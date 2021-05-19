@@ -6,17 +6,16 @@ const SOCKET_SERVER_URL = "http://localhost:3030";
 
 function App() {
   const [response, setResponse] = useState("");
-  const socketRef = useRef();
 
   useEffect(() => {
-    socketRef.current = socketIOClient(SOCKET_SERVER_URL);
+    const socket = socketIOClient(SOCKET_SERVER_URL);
 
-    socketRef.current.on("announcement", (data) => {
+    socket.on("announcement", (data) => {
       console.log("data", data.message);
       setResponse(data);
     });
     return () => {
-      socketRef.current.disconnect();
+      socket.disconnect();
     };
   }, []);
   console.log("response", response);
