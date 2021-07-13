@@ -1,16 +1,11 @@
 import server from "./config/server";
 import userDetailRouter from "./src/routes/userDetails";
-import mongoose from "mongoose";
+import db from "./config/database";
 
-mongoose.connect("mongodb://localhost:27017/disaster-call", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-mongoose.connection.on("error", (err) => {
+db.on("error", (err) => {
   console.log("err", err);
 });
-mongoose.connection.on("connected", (err, res) => {
+db.once("open", (err, res) => {
   console.log("mongoose is connected");
 });
 
