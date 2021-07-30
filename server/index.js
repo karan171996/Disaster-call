@@ -1,5 +1,7 @@
 import server from "./config/server";
 import userDetailRouter from "./src/routes/userDetails";
+import locationRouter from "./src/routes/fetchPlaces";
+
 import db from "./config/database";
 
 db.on("error", (err) => {
@@ -10,6 +12,8 @@ db.once("open", (err, res) => {
 });
 
 server.use("/userDetails", userDetailRouter);
+server.use('/', locationRouter);
+
 const PORT = process.env.PORT || 3030;
 server.listen(PORT, () => {
   console.log(`app running on port ${PORT}`);

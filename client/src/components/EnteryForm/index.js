@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import "./index.scss";
 import { debounce } from "../../util/debounce";
 import axios from "axios";
@@ -17,7 +17,7 @@ export const EnteryFormComponent = () => {
   const onChangeHandlers = (value) => {
     setFetching(true);
     axios
-      .get("http://localhost:3030/userDetails/get-place", {
+      .get("http://localhost:3030/get-place", {
         params: {
           place: value,
         },
@@ -36,10 +36,35 @@ export const EnteryFormComponent = () => {
   console.log("options", options);
 
   const onFinishHandler = (values) => {
-    values.preventDefault();
-
     console.log("values", values);
+    const latitude = options?.features.find(
+      (item) => item.place_name === values?.location
+    )?.center[0];
+    console.log(
+      "🚀 ~ file: index.js ~ line 43 ~ onFinishHandler ~ latitude",
+      latitude
+    );
+    const longitude = options?.features.find(
+      (item) => item.place_name === values?.location
+    )?.center[0];
+    axios
+      .post("http://localhost:3030/userDetails/add", {
+        ...values,
+        latitude: latitude,
+        longitude: longitude,
+      })
+      .then((response) => console.log(response?.data?.newUserDetail))
+      .catch((error) => console.log(error));
   };
+
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="91">+91</Option>
+        <Option value="87">+87</Option>
+      </Select>
+    </Form.Item>
+  );
 
   return (
     <div className="form__container">
@@ -75,12 +100,9 @@ export const EnteryFormComponent = () => {
             </Select>
           </Form.Item>
           <Form.Item label="Phone No" name="phoneNumber">
-            <Input.Group compact>
-              <Input style={{ width: "20%" }} defaultValue="+91" disabled />
-              <Input style={{ width: "80%" }} />
-            </Input.Group>
+            <Input addonBefore={prefixSelector} style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item label="Situation">
+          <Form.Item label="Situation" name="situation">
             <TextArea placeholder="Situation of Disaster" autoSize />
           </Form.Item>
           <Form.Item>

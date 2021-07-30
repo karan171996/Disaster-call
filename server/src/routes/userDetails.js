@@ -1,12 +1,12 @@
 import express from "express";
 import {
   UserDetailController,
-  getPlaceController,
+  getLocations
 } from "../controllers/UserDetail";
 
 const router = express.Router();
 
 router.route("/add").post(UserDetailController);
-router.route("/get-place").get(getPlaceController);
+router.route("/get-locations").get(getLocations);
 
 export default router;
