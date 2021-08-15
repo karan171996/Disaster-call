@@ -27,13 +27,11 @@ export const UserDetailController = async (req, res, next) => {
 
 // Read UserDetail get call
 export const getLocations = async (req, res, next) => {
-  console.log('req', req.query);
   try {
-    let locations = await UserDetailModal.find();
+    let locations = await UserDetailModal.find({department: req.query.department});
     res.status(200).json({ locations });
     next();
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
-
 };

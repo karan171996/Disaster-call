@@ -33,21 +33,21 @@ export const getPlaceController = async (req, res, next) => {
           {
             id: "place.10939784736551790",
             wikidata: "Q670861",
-            text: "Brodersby-Goltoft",
+            text: "Brodersby-Goltoft"
           },
           {
             id: "region.11132476791043490",
             wikidata: "Q1194",
             short_code: "DE-SH",
-            text: "Schleswig-Holstein",
+            text: "Schleswig-Holstein"
           },
           {
             id: "country.11437281100480410",
             wikidata: "Q183",
             short_code: "de",
-            text: "Germany",
-          },
-        ],
+            text: "Germany"
+          }
+        ]
       },
       {
         id: "address.1088203218743966",
@@ -67,15 +67,15 @@ export const getPlaceController = async (req, res, next) => {
             id: "region.6397691837244140",
             wikidata: "Q1197",
             short_code: "DE-NI",
-            text: "Lower Saxony",
+            text: "Lower Saxony"
           },
           {
             id: "country.11437281100480410",
             wikidata: "Q183",
             short_code: "de",
-            text: "Germany",
-          },
-        ],
+            text: "Germany"
+          }
+        ]
       },
       {
         id: "address.8737433272409372",
@@ -94,15 +94,15 @@ export const getPlaceController = async (req, res, next) => {
             id: "region.9149223705033610",
             wikidata: "Q5708",
             short_code: "FI-16",
-            text: "Päijänne Tavastia",
+            text: "Päijänne Tavastia"
           },
           {
             id: "country.12473357386425650",
             wikidata: "Q33",
             short_code: "fi",
-            text: "Finland",
-          },
-        ],
+            text: "Finland"
+          }
+        ]
       },
       {
         id: "address.2507420413931442",
@@ -122,15 +122,15 @@ export const getPlaceController = async (req, res, next) => {
             id: "region.4415653720663110",
             wikidata: "Q775",
             short_code: "NL-GE",
-            text: "Gelderland",
+            text: "Gelderland"
           },
           {
             id: "country.13545879598622050",
             wikidata: "Q55",
             short_code: "nl",
-            text: "Netherlands",
-          },
-        ],
+            text: "Netherlands"
+          }
+        ]
       },
       {
         id: "address.4774715659530264",
@@ -149,25 +149,25 @@ export const getPlaceController = async (req, res, next) => {
           {
             id: "place.3973555947083920",
             wikidata: "Q2680952",
-            text: "Rotterdam",
+            text: "Rotterdam"
           },
           {
             id: "region.14504181044798270",
             wikidata: "Q694",
             short_code: "NL-ZH",
-            text: "South Holland",
+            text: "South Holland"
           },
           {
             id: "country.13545879598622050",
             wikidata: "Q55",
             short_code: "nl",
-            text: "Netherlands",
-          },
-        ],
-      },
+            text: "Netherlands"
+          }
+        ]
+      }
     ],
     attribution:
-      "NOTICE: © 2021 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained. POI(s) provided by Foursquare.",
+      "NOTICE: © 2021 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained. POI(s) provided by Foursquare."
   });
   next();
 };
