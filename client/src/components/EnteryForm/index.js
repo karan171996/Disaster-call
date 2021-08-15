@@ -1,60 +1,52 @@
-import { useState } from "react";
-import "./index.scss";
-import { debounce } from "../../util/debounce";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Form, Input, Button, Select, Spin } from "antd";
 
+//stylesheet
+import "./index.scss";
+
+//Custom hooks
+import useDebounce from "../hooks/useDebounce";
+
 //constants
 import { departmentNames } from "../../constants/departments";
+
+//api calls
+import { getPlaces, addUserDetails } from "../../api/userDetails";
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 export const EnteryFormComponent = () => {
-  const [options, setOptions] = useState({});
-  const [fetching, setFetching] = useState(false);
+  const [enteredPlace, setPlace] = useState("");
+  const latestValue = useDebounce(enteredPlace, 500);
+  const [foundPlaces, setPlaces] = useState({});
 
-  const onChangeHandlers = (value) => {
-    setFetching(true);
-    axios
-      .get("http://localhost:3030/get-place", {
-        params: {
-          place: value,
-        },
-      })
-      .then((response) => {
-        setFetching(false);
-        setOptions(response.data);
-      })
-      .catch((error) => {
-        setFetching(false);
-        console.log("error", error);
+  useEffect(() => {
+    if (latestValue) {
+      foundLocations(latestValue).then((data) => {
+        setPlaces(data);
       });
+    }
+  }, [latestValue]);
+
+  const foundLocations = (latestValue) => {
+    const place = getPlaces(latestValue);
+    return place;
+  };
+  const searchResultHandler = (value) => {
+    setPlace(value);
   };
 
-  const searchResultHandler = debounce(onChangeHandlers, 500);
-  console.log("options", options);
+  // console.log("options", places);
 
   const onFinishHandler = (values) => {
-    console.log("values", values);
-    const latitude = options?.features.find(
-      (item) => item.place_name === values?.location
-    )?.center[0];
-    console.log(
-      "🚀 ~ file: index.js ~ line 43 ~ onFinishHandler ~ latitude",
-      latitude
-    );
-    const longitude = options?.features.find(
-      (item) => item.place_name === values?.location
-    )?.center[0];
-    axios
-      .post("http://localhost:3030/userDetails/add", {
-        ...values,
-        latitude: latitude,
-        longitude: longitude,
-      })
-      .then((response) => console.log(response?.data?.newUserDetail))
-      .catch((error) => console.log(error));
+    // const latitude = places?.features.find(
+    //   (item) => item.place_name === values?.location
+    // )?.center[0];
+    // const longitude = places?.features.find(
+    //   (item) => item.place_name === values?.location
+    // )?.center[0];
   };
 
   const prefixSelector = (
@@ -80,12 +72,12 @@ export const EnteryFormComponent = () => {
             <Select
               showSearch
               filterOption={false}
-              notFoundContent={fetching ? <Spin size="small" /> : null}
+              // notFoundContent={<Spin size="small" /> }
               placeholder="Select Location"
               onSearch={searchResultHandler}
             >
-              {options?.features &&
-                options?.features.map((item) => (
+              {foundPlaces?.features &&
+                foundPlaces?.features.map((item) => (
                   <Option value={item.place_name}>{item.place_name}</Option>
                 ))}
             </Select>
