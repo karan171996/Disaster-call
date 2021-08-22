@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Form, Input, Button, Select, Spin } from "antd";
+import socketIOClient from "socket.io-client";
 
 //stylesheet
 import "./index.scss";
@@ -16,12 +17,23 @@ import { getPlaces, addUserDetails } from "../../api/userDetails";
 
 const { Option } = Select;
 const { TextArea } = Input;
+const SOCKET_SERVER_URL = "http://localhost:3030";
 
 export const EnteryFormComponent = () => {
   const [enteredPlace, setPlace] = useState("");
   const latestValue = useDebounce(enteredPlace, 500);
   const [foundPlaces, setPlaces] = useState({});
 
+  useEffect(() => {
+    const socket = socketIOClient(SOCKET_SERVER_URL);
+
+    socket.on("hello", (data) => {
+      console.log("data", data);
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
   useEffect(() => {
     if (latestValue) {
       foundLocations(latestValue).then((data) => {

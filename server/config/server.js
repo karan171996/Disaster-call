@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 dotenv.config();
-const server = express();
-server.use(cors());
-server.use(express.json());
-server.use(helmet());
-export default server;
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(helmet());
+export default app;

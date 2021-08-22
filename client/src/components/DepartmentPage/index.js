@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
-import { useState, useEffect, useMemo, useRef } from "react";
-import { Layout, Menu } from "antd";
+import { useState, useEffect, useMemo } from "react";
+import { Layout } from "antd";
 
 //Components
-import Department from "../Departments";
+import FooterContainer from "./footer";
+import ContentContainer from "./content";
+import MenuContainer from "./menuItem";
 
 //stylesheet
 import "./index.scss";
@@ -11,13 +13,11 @@ import "./index.scss";
 // departmentNames
 import { departmentNames } from "../../constants/departments";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Sider } = Layout;
 
 const LayoutContainer = ({ department }) => {
   const [departmentDetail, setDepartment] = useState({});
-  const ref = useRef(null);
   useEffect(() => {
-    console.log(department);
     setDepartment(department);
   }, [department]);
 
@@ -27,7 +27,7 @@ const LayoutContainer = ({ department }) => {
 
   const departmentClickHandler = (item) => {
     const selectedDepartment = departmentNames.find(
-      (department, index) => index + 1 === Number(item?.key)
+      (_, index) => index + 1 === Number(item?.key)
     );
     setDepartment(selectedDepartment);
   };
@@ -55,21 +55,7 @@ const LayoutContainer = ({ department }) => {
         }}
       >
         <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          onClick={departmentClickHandler}
-        >
-          {departmentNames.map((item, index) => (
-            <Menu.Item
-              key={index + 1}
-              icon={<div className="menu-icon">{item.icon}</div>}
-            >
-              {item.shortName}
-            </Menu.Item>
-          ))}
-        </Menu>
+        <MenuContainer clickHandler={departmentClickHandler} />
       </Sider>
       <Layout>
         <Header
@@ -78,14 +64,8 @@ const LayoutContainer = ({ department }) => {
         >
           {selectedDepartment}
         </Header>
-        <Content>
-          <div className="site-layout-background">
-            <Department />
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          💟 Created by Karan Singh
-        </Footer>
+        <ContentContainer />
+        <FooterContainer />
       </Layout>
     </Layout>
   );
