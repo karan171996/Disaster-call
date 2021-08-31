@@ -1,4 +1,3 @@
-import { io } from "../../config/socket";
 // Fetch placeValues
 export const getPlaceController = async (req, res, next) => {
   // const value = req.query.place;
@@ -101,18 +100,6 @@ export const getPlaceController = async (req, res, next) => {
   };
 
   res.status(200).json(responseData);
-  let interval;
-  io.on("connection", (socket) => {
-    if (interval) {
-      clearInterval(interval);
-    }
-    interval = setInterval(() => {
-      console.log(responseData);
-      socket.emit("hello", responseData);
-    }, 5000);
-    socket.on("disconnect", () => {
-      console.log("client disconnected");
-    });
-  });
+
   next();
 };

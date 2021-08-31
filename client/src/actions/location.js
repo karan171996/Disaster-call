@@ -1,12 +1,8 @@
-import { GET_LOCATIONS } from "../actionTypes";
+import { GET_LOCATIONS_REQUEST } from "../actionTypes";
 
-const locations = (loctionObjects) => {
+export const locations = (loctionObjects) => {
   return {
-    type: GET_LOCATIONS,
+    type: GET_LOCATIONS_REQUEST,
     payload: loctionObjects,
   };
-};
-
-export default {
-  locations,
 };

@@ -1,15 +1,16 @@
 import { EnteryFormComponent } from "./components/EnteryForm";
 import DepartmentPage from "./components/DepartmentPage";
+import createSagaMiddleware from "redux-saga";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./reducers";
+import rootSaga from "./sagas";
 
-const store = createStore(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const sagaMiddleWear = createSagaMiddleware();
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleWear));
+sagaMiddleWear.run(rootSaga);
 
 function App() {
   return (

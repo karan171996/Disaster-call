@@ -1,6 +1,10 @@
 import PropTypes from "prop-types";
 import { useState, useEffect, useMemo } from "react";
 import { Layout } from "antd";
+import { useDispatch } from "react-redux";
+
+// actions
+import * as actions from "../../actions";
 
 //Components
 import FooterContainer from "./footer";
@@ -13,37 +17,58 @@ import "./index.scss";
 // departmentNames
 import { departmentNames } from "../../constants/departments";
 
+import socketIOClient from "socket.io-client";
+
+const SOCKET_SERVER_URL = "http://localhost:3030";
+
 const { Header, Sider } = Layout;
 
-const LayoutContainer = ({ department }) => {
-  const [departmentDetail, setDepartment] = useState({});
-  useEffect(() => {
-    setDepartment(department);
-  }, [department]);
+const LayoutContainer = () => {
+  const dispatch = useDispatch();
 
+  const [departmentDetail, setDepartment] = useState({});
+  // useEffect(() => {
+  //   setDepartment(department);
+  // }, [department]);
+  const socket = socketIOClient(SOCKET_SERVER_URL, {
+    transports: ["polling"],
+    forceNew: true,
+  });
   useEffect(() => {
+    dispatch(
+      actions.departmentAlertRequest({ department: departmentNames[0]?.value })
+    );
+    socket.on("department", (data) => {
+      console.log("data", data);
+    });
     setDepartment(departmentNames[0]);
+    return () => {
+      socket.on("disconnect", () => {
+        console.log("socket-disconnect", socket.connected);
+      });
+    };
   }, []);
 
   const departmentClickHandler = (item) => {
     const selectedDepartment = departmentNames.find(
       (_, index) => index + 1 === Number(item?.key)
     );
+    dispatch(
+      actions.departmentAlertRequest({ department: selectedDepartment?.value })
+    );
     setDepartment(selectedDepartment);
   };
 
-  const selectedDepartment = useMemo(() => {
-    return (
-      <div className="heading_departmentName_section">
-        <div className="heading_departmentName_section__icon">
-          {departmentDetail?.icon}
-        </div>
-        <div className="heading_departmentName_section__name">
-          {departmentDetail?.label}
-        </div>
+  const selectedDepartment = (
+    <div className="heading_departmentName_section">
+      <div className="heading_departmentName_section__icon">
+        {departmentDetail?.icon}
       </div>
-    );
-  }, [departmentDetail]);
+      <div className="heading_departmentName_section__name">
+        {departmentDetail?.label}
+      </div>
+    </div>
+  );
 
   return (
     <Layout className="layout__container">
@@ -64,16 +89,11 @@ const LayoutContainer = ({ department }) => {
         >
           {selectedDepartment}
         </Header>
-        <ContentContainer />
+        <ContentContainer department={departmentDetail} />
         <FooterContainer />
       </Layout>
     </Layout>
   );
 };
-LayoutContainer.defaultProps = {
-  department: {},
-};
-LayoutContainer.propTypes = {
-  department: PropTypes.object,
-};
+
 export default LayoutContainer;

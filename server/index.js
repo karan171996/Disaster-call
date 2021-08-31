@@ -1,6 +1,8 @@
 import app from "./config/server";
 import userDetailRouter from "./src/routes/userDetails";
 import locationRouter from "./src/routes/fetchPlaces";
+import departmentDataRouter from "./src/routes/departments";
+
 import db from "./config/database";
 import { server } from "./config/socket";
 
@@ -11,6 +13,7 @@ db.once("open", (err, res) => {
   console.log("mongoose is connected");
 });
 
+app.use("/department", departmentDataRouter);
 app.use("/userDetails", userDetailRouter);
 app.use("/", locationRouter);
 

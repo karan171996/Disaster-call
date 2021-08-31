@@ -1,11 +1,13 @@
-import { GET_LOCATIONS } from "../actionTypes";
+import { GET_LOCATIONS_SUCCESS, GET_LOCATIONS_ERROR } from "../actionTypes";
 
 const mapLocation = (state = {}, action) => {
   switch (action.type) {
-    case GET_LOCATIONS:
+    case GET_LOCATIONS_ERROR:
+    case GET_LOCATIONS_SUCCESS:
       return {
         ...state,
-        locations: action.payload,
+        location: action?.location,
+        locationMessage: action?.message,
       };
     default:
       return state;

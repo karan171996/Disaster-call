@@ -1,7 +1,5 @@
-import location from "./location";
+import { locations } from "./location";
+import { submitEntryRequest } from "./usersDetail";
+import { departmentAlertRequest } from "./department";
 
-const allActions = {
-  location,
-};
-
-export default allActions;
+export { locations, submitEntryRequest, departmentAlertRequest };

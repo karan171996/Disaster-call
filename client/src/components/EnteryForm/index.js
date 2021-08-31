@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 import { Form, Input, Button, Select, Spin } from "antd";
-import socketIOClient from "socket.io-client";
-
+import * as actions from "../../actions";
 //stylesheet
 import "./index.scss";
 
@@ -12,40 +11,26 @@ import useDebounce from "../hooks/useDebounce";
 //constants
 import { departmentNames } from "../../constants/departments";
 
-//api calls
-import { getPlaces, addUserDetails } from "../../api/userDetails";
-
 const { Option } = Select;
 const { TextArea } = Input;
-const SOCKET_SERVER_URL = "http://localhost:3030";
 
 export const EnteryFormComponent = () => {
   const [enteredPlace, setPlace] = useState("");
-  const latestValue = useDebounce(enteredPlace, 500);
   const [foundPlaces, setPlaces] = useState({});
+  const dispatch = useDispatch();
+  const latestValue = useDebounce(enteredPlace, 500);
+  const locations = useSelector((state) => state.locations.location);
 
   useEffect(() => {
-    const socket = socketIOClient(SOCKET_SERVER_URL);
+    setPlaces(locations);
+  }, [locations]);
 
-    socket.on("hello", (data) => {
-      console.log("data", data);
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
   useEffect(() => {
     if (latestValue) {
-      foundLocations(latestValue).then((data) => {
-        setPlaces(data);
-      });
+      dispatch(actions.locations(latestValue));
     }
   }, [latestValue]);
 
-  const foundLocations = (latestValue) => {
-    const place = getPlaces(latestValue);
-    return place;
-  };
   const searchResultHandler = (value) => {
     setPlace(value);
   };
@@ -53,12 +38,27 @@ export const EnteryFormComponent = () => {
   // console.log("options", places);
 
   const onFinishHandler = (values) => {
-    // const latitude = places?.features.find(
-    //   (item) => item.place_name === values?.location
-    // )?.center[0];
-    // const longitude = places?.features.find(
-    //   (item) => item.place_name === values?.location
-    // )?.center[0];
+    const latitude = foundPlaces?.features.find(
+      (item) => item.place_name === values?.location
+    )?.center[0];
+    console.log(
+      "🚀 ~ file: index.js ~ line 59 ~ onFinishHandler ~ latitude",
+      latitude
+    );
+    const longitude = foundPlaces?.features.find(
+      (item) => item.place_name === values?.location
+    )?.center[1];
+    console.log(
+      "🚀 ~ file: index.js ~ line 63 ~ onFinishHandler ~ longitude",
+      longitude
+    );
+    dispatch(
+      actions.submitEntryRequest({
+        ...values,
+        latitude,
+        longitude,
+      })
+    );
   };
 
   const prefixSelector = (
