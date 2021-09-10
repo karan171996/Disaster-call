@@ -1,28 +1,31 @@
-import { useState, useEffect } from "react";
-import "./App.css";
-import socketIOClient from "socket.io-client";
+import { EnteryFormComponent } from "./components/EnteryForm";
+import DepartmentPage from "./components/DepartmentPage";
+import createSagaMiddleware from "redux-saga";
 
-const SOCKET_SERVER_URL = "http://localhost:3030";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import rootReducer from "./reducers";
+import rootSaga from "./sagas";
+
+const sagaMiddleWear = createSagaMiddleware();
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleWear));
+sagaMiddleWear.run(rootSaga);
 
 function App() {
-  const [response, setResponse] = useState("");
-
-  useEffect(() => {
-    const socket = socketIOClient(SOCKET_SERVER_URL);
-
-    socket.on("announcement", (data) => {
-      console.log("data", data.message);
-      setResponse(data);
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-  console.log("response", response);
   return (
-    <div className="App">
-      <h1>Hello karan</h1>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <EnteryFormComponent />
+          </Route>
+          <Route path="/department/:id">
+            <DepartmentPage />
+          </Route>
+        </Switch>
+      </Router>
+    </Provider>
   );
 }
 
