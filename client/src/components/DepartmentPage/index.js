@@ -1,10 +1,6 @@
 import PropTypes from "prop-types";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Layout } from "antd";
-import { useDispatch } from "react-redux";
-
-// actions
-import * as actions from "../../actions";
 
 //Components
 import FooterContainer from "./footer";
@@ -16,31 +12,13 @@ import "./index.scss";
 
 // departmentNames
 import { departmentNames } from "../../constants/departments";
-
-import socketIOClient from "socket.io-client";
-
-const SOCKET_SERVER_URL = "http://localhost:3030";
-
+import { socket } from "../../server.setup";
 const { Header, Sider } = Layout;
 
 const LayoutContainer = () => {
-  const dispatch = useDispatch();
-
   const [departmentDetail, setDepartment] = useState({});
-  // useEffect(() => {
-  //   setDepartment(department);
-  // }, [department]);
-  const socket = socketIOClient(SOCKET_SERVER_URL, {
-    transports: ["polling"],
-    forceNew: true,
-  });
+
   useEffect(() => {
-    dispatch(
-      actions.departmentAlertRequest({ department: departmentNames[0]?.value })
-    );
-    socket.on("department", (data) => {
-      console.log("data", data);
-    });
     setDepartment(departmentNames[0]);
     return () => {
       socket.on("disconnect", () => {
@@ -52,9 +30,6 @@ const LayoutContainer = () => {
   const departmentClickHandler = (item) => {
     const selectedDepartment = departmentNames.find(
       (_, index) => index + 1 === Number(item?.key)
-    );
-    dispatch(
-      actions.departmentAlertRequest({ department: selectedDepartment?.value })
     );
     setDepartment(selectedDepartment);
   };

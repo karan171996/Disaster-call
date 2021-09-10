@@ -1,5 +1,5 @@
 import { addUserDetails } from "./userDetails";
 import { getPlaces } from "./locations";
-import { departmentAlerts } from "./department";
+import { locationAlerts } from "./department";
 
-export { addUserDetails, getPlaces, departmentAlerts };
+export { addUserDetails, getPlaces, locationAlerts };

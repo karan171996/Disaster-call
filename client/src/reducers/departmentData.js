@@ -1,13 +1,12 @@
-import { DEPARTMENT_DATA_SUCCESS, DEPARTMENT_DATA_ERROR } from "../actionTypes";
+import { LOCATION_DELETE_SUCCESS, LOCATION_DELETE_ERROR } from "../actionTypes";
 
 const department = (state = {}, action) => {
   switch (action.type) {
-    case DEPARTMENT_DATA_SUCCESS:
-    case DEPARTMENT_DATA_ERROR:
+    case LOCATION_DELETE_SUCCESS:
+    case LOCATION_DELETE_ERROR:
       return {
         ...state,
-        department: action?.department,
-        departmentMessage: action?.departmentMessage,
+        locationDeleteMessage: action?.locationDeleteMessage,
       };
     default:
       return state;

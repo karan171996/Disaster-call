@@ -1,8 +1,8 @@
-import { DEPARTMENT_DATA_REQUEST } from "../actionTypes";
+import { LOCATION_DELETE_REQUEST } from "../actionTypes";
 
-export const departmentAlertRequest = (payload) => {
+export const deleteLocationRequest = (payload) => {
   return {
-    type: DEPARTMENT_DATA_REQUEST,
+    type: LOCATION_DELETE_REQUEST,
     payload,
   };
 };

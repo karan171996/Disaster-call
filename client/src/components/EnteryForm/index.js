@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Form, Input, Button, Select, Spin } from "antd";
+import { Form, Input, Button, Select, Card } from "antd";
 import * as actions from "../../actions";
 //stylesheet
 import "./index.scss";
@@ -35,23 +35,13 @@ export const EnteryFormComponent = () => {
     setPlace(value);
   };
 
-  // console.log("options", places);
-
   const onFinishHandler = (values) => {
     const latitude = foundPlaces?.features.find(
       (item) => item.place_name === values?.location
     )?.center[0];
-    console.log(
-      "🚀 ~ file: index.js ~ line 59 ~ onFinishHandler ~ latitude",
-      latitude
-    );
     const longitude = foundPlaces?.features.find(
       (item) => item.place_name === values?.location
     )?.center[1];
-    console.log(
-      "🚀 ~ file: index.js ~ line 63 ~ onFinishHandler ~ longitude",
-      longitude
-    );
     dispatch(
       actions.submitEntryRequest({
         ...values,
@@ -72,50 +62,55 @@ export const EnteryFormComponent = () => {
 
   return (
     <div className="form__container">
-      <Form onFinish={onFinishHandler}>
-        <div className="form__container_input_container">
-          <Form.Item label="DisasterName" name="disasterName">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Name" name="userName">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Location" name="location">
-            <Select
-              showSearch
-              filterOption={false}
-              // notFoundContent={<Spin size="small" /> }
-              placeholder="Select Location"
-              onSearch={searchResultHandler}
-            >
-              {foundPlaces?.features &&
-                foundPlaces?.features.map((item) => (
-                  <Option value={item.place_name}>{item.place_name}</Option>
+      <h1>
+        <b>Disaster Call Form</b>
+      </h1>
+      <Card className="form__container_input_container">
+        <Form onFinish={onFinishHandler}>
+          <div>
+            <Form.Item label="DisasterName" name="disasterName">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Name" name="userName">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Location" name="location">
+              <Select
+                showSearch
+                filterOption={false}
+                // notFoundContent={<Spin size="small" /> }
+                placeholder="Select Location"
+                onSearch={searchResultHandler}
+              >
+                {foundPlaces?.features &&
+                  foundPlaces?.features.map((item) => (
+                    <Option value={item.place_name}>{item.place_name}</Option>
+                  ))}
+              </Select>
+            </Form.Item>
+            <Form.Item label="Department" name="department">
+              <Select placeholder="Department">
+                {departmentNames.map((item, index) => (
+                  <Option key={index} value={item.value}>
+                    {item.label}
+                  </Option>
                 ))}
-            </Select>
-          </Form.Item>
-          <Form.Item label="Department" name="department">
-            <Select placeholder="Department">
-              {departmentNames.map((item, index) => (
-                <Option key={index} value={item.value}>
-                  {item.label}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item label="Phone No" name="phoneNumber">
-            <Input addonBefore={prefixSelector} style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item label="Situation" name="situation">
-            <TextArea placeholder="Situation of Disaster" autoSize />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </div>
-      </Form>
+              </Select>
+            </Form.Item>
+            <Form.Item label="Phone No" name="phoneNumber">
+              <Input addonBefore={prefixSelector} style={{ width: "100%" }} />
+            </Form.Item>
+            <Form.Item label="Situation" name="situation">
+              <TextArea placeholder="Situation of Disaster" autoSize />
+            </Form.Item>
+            <div className="submitButton">
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </div>
+          </div>
+        </Form>
+      </Card>
     </div>
   );
 };

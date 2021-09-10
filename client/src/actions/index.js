@@ -1,5 +1,5 @@
 import { locations } from "./location";
 import { submitEntryRequest } from "./usersDetail";
-import { departmentAlertRequest } from "./department";
+import { deleteLocationRequest } from "./department";
 
-export { locations, submitEntryRequest, departmentAlertRequest };
+export { locations, submitEntryRequest, deleteLocationRequest };

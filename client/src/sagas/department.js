@@ -5,33 +5,31 @@ import * as Api from "../api";
 function* departmentAlert(action) {
   try {
     const departmentAlertResponse = yield call(
-      Api.departmentAlerts,
+      Api.locationAlerts,
       action.payload
     );
-    if (departmentAlertResponse?.status === 200) {
+    if (departmentAlertResponse?.status === 201) {
       yield put({
-        type: actionTypes.DEPARTMENT_DATA_SUCCESS,
-        department: departmentAlertResponse?.data?.locations ?? [],
-        departmentMessage: "success",
+        type: actionTypes.LOCATION_DELETE_SUCCESS,
+        locationDeleteMessage: "success",
       });
     } else {
       yield put({
-        type: actionTypes.DEPARTMENT_DATA_ERROR,
-        department: [],
-        departmentMessage: "error",
+        type: actionTypes.LOCATION_DELETE_ERROR,
+        locationDeleteMessage: "error",
       });
     }
   } catch (e) {
     yield put({
-      type: actionTypes.DEPARTMENT_DATA_ERROR,
+      type: actionTypes.LOCATION_DELETE_ERROR,
       department: [],
-      departmentMessage: e,
+      locationDeleteMessage: e,
     });
   }
 }
 
 export function* departmentAlertSaga() {
-  yield takeEvery(actionTypes.DEPARTMENT_DATA_REQUEST, departmentAlert);
+  yield takeEvery(actionTypes.LOCATION_DELETE_REQUEST, departmentAlert);
 }
 function* departmentSaga() {
   yield all([fork(departmentAlertSaga)]);

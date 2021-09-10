@@ -5,7 +5,6 @@ import * as Api from "../api";
 function* getLocations(action) {
   try {
     const locationsResponse = yield call(Api.getPlaces, action.payload);
-    console.log("locationsResponse", locationsResponse);
     if (locationsResponse?.status === 200) {
       yield put({
         type: actionTypes.GET_LOCATIONS_SUCCESS,

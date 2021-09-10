@@ -16,3 +16,30 @@ code {
     monospace;
 }
 
+.ant-drawer-body {
+  .drawer {
+      &__date, &__disasterName {
+        display:flex;
+        justify-content: space-between;  
+      }
+      &__coordinates {
+        &__container {
+          padding-left:20px;
+          display:flex;
+          justify-content: space-between;  
+        }
+      }
+      &__userData {
+        &-container{
+          padding-left:20px;
+          display:flex;
+          justify-content: space-between; 
+        }
+      }
+      &__situationData {
+        margin-top:20px;
+        display:flex;
+        flex-direction: column;
+      }
+  }
+}

@@ -1,13 +1,11 @@
 import axios from "axios";
 
-export const departmentAlerts = async (department) => {
+export const locationAlerts = async (departmentId) => {
   try {
-    const response = await axios.get(
-      "http://localhost:3030/department/get-locations",
+    const response = await axios.post(
+      "http://localhost:3030/department/delete-locations",
       {
-        params: {
-          department: department?.department,
-        },
+        location: departmentId,
       }
     );
     return response;
