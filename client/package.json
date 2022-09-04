@@ -7,7 +7,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^14.4.3",
     "antd": "^4.16.8",
-    "axios": "^0.21.2",
+    "axios": "^0.27.2",
     "mapbox-gl": "^2.10.0",
     "moment": "^2.29.4",
     "node-sass": "^6.0.1",
